@@ -54,6 +54,65 @@ def test_certificate_creation_and_verification():
     return True
 
 
+def test_mismatched_certificate():
+    """Test that verification fails when certificate is signed by different key."""
+    print("\nTesting Certificate with Mismatched Keys")
+    print("=" * 60)
+    
+    with tempfile.TemporaryDirectory() as temp_dir1, tempfile.TemporaryDirectory() as temp_dir2:
+        print("1. Creating first key pair and certificate...")
+        priv1, pub1 = create_test_keys(temp_dir1)
+        cert_path = create_certificate(pub1, temp_dir1)
+        
+        print("2. Creating second key pair...")
+        priv2, pub2 = create_test_keys(temp_dir2)
+        
+        print("3. Creating certificate with first public key but signed with second private key...")
+        from cryptography import x509
+        from cryptography.hazmat.primitives import hashes, serialization
+        from cryptography.x509.oid import NameOID
+        import datetime
+        
+        with open(pub1, "rb") as f:
+            public_key1 = serialization.load_pem_public_key(f.read(), backend=default_backend())
+        
+        with open(priv2, "rb") as f:
+            private_key2 = serialization.load_pem_private_key(f.read(), password=None, backend=default_backend())
+        
+        subject = issuer = x509.Name([
+            x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Test Org"),
+            x509.NameAttribute(NameOID.COMMON_NAME, "Mismatched Cert"),
+        ])
+        
+        bad_cert = (
+            x509.CertificateBuilder()
+            .subject_name(subject)
+            .issuer_name(issuer)
+            .public_key(public_key1)
+            .serial_number(x509.random_serial_number())
+            .not_valid_before(datetime.datetime.utcnow())
+            .not_valid_after(datetime.datetime.utcnow() + datetime.timedelta(days=365))
+            .sign(private_key2, hashes.SHA256(), default_backend())
+        )
+        
+        bad_cert_path = os.path.join(temp_dir1, "bad_certificate.pem")
+        with open(bad_cert_path, "wb") as f:
+            f.write(bad_cert.public_bytes(serialization.Encoding.PEM))
+        
+        print("4. Verifying mismatched certificate...")
+        is_valid = verify_certificate(bad_cert_path)
+        
+        if not is_valid:
+            print("   ✓ Correctly rejected certificate with mismatched key signature")
+            print("=" * 60)
+            return True
+        else:
+            print("   ✗ FAILED: Should have rejected certificate with mismatched signature")
+            print("=" * 60)
+            return False
+
+
 def test_stub_functions():
     """Test the stub functions for parallel development."""
     print("Testing Stub Functions")
@@ -92,6 +151,8 @@ def test_stub_functions():
 if __name__ == "__main__":
     try:
         success = test_certificate_creation_and_verification()
+        if success:
+            success = test_mismatched_certificate()
         if success:
             test_stub_functions()
     except ImportError as e:

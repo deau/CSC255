@@ -3,9 +3,10 @@ import datetime
 
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.backends import default_backend
 from cryptography.x509.oid import NameOID
+from cryptography.exceptions import InvalidSignature
 
 
 def create_certificate(public_key_path: str, output_dir: str) -> str:
@@ -81,6 +82,19 @@ def verify_certificate(cert_path: str) -> bool:
             return False
         if cert.issuer != cert.subject:
             return False
+        
+        try:
+            public_key.verify(
+                cert.signature,
+                cert.tbs_certificate_bytes,
+                padding.PKCS1v15(),
+                cert.signature_hash_algorithm
+            )
+        except InvalidSignature:
+            return False
+        except Exception:
+            return False
+            
     except Exception:
         return False
     
