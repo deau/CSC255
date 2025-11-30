@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSC255 Group 3 Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="{{ url_for('static', filename='oakton-logo-green.jpeg') }}" alt="Oakton College" class="logo">
+            <h1>CSC255 Group 3 Project</h1>
+            <h2>Alex, Andrew, Ji Hea, Mila</h2>
+            <p>Self-Signed Certificate Generation and Authentication</p>
+        </header>
+
+        <main>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="card-container">
+                <div class="card">
+                    <h2>Generate Keys & Certificate</h2>
+                    <p>Create a new RSA key pair and self-signed certificate</p>
+                    <form action="{{ url_for('generate') }}" method="post">
+                        <button type="submit" class="btn btn-primary">Generate</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>Authenticate</h2>
+                    <p>Upload a certificate to verify its authenticity</p>
+                    <a href="{{ url_for('authenticate') }}" class="btn btn-primary">Upload Certificate</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
