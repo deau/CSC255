@@ -9,7 +9,7 @@ from crypto.cert import create_certificate, verify_certificate
 
 
 app = Flask(__name__)
-app.secret_key = 'dev-secret-key-change-in-production'
+app.secret_key = 'csc255-group3-project'
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # 1MB max file size
 
 # Create temp directory for file operations
