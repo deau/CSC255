@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Success - CSC255 Group 3 Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Verification Successful!</h1>
+        </header>
+
+        <main>
+            <div class="result-box success">
+                <div class="result-icon">✓</div>
+                <h2>Certificate Valid</h2>
+                <p>The uploaded certificate is valid and has been successfully verified.</p>
+
+                <div class="result-details">
+                    <h3>Verification Checks Passed:</h3>
+                    <ul>
+                        <li>Certificate is properly formatted</li>
+                        <li>Certificate is self-signed</li>
+                        <li>Certificate signature is valid</li>
+                        <li>Certificate is within validity period</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('authenticate') }}" class="btn btn-primary">Verify Another</a>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Failed - CSC255 Group 3 Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Verification Failed</h1>
+        </header>
+
+        <main>
+            <div class="result-box failure">
+                <div class="result-icon">✗</div>
+                <h2>Certificate Invalid</h2>
+                <p>The uploaded certificate failed verification.</p>
+
+                <div class="result-details">
+                    <h3>Possible Reasons:</h3>
+                    <ul>
+                        <li>Certificate is not properly formatted</li>
+                        <li>Certificate is not self-signed</li>
+                        <li>Certificate signature is invalid</li>
+                        <li>Certificate has expired or is not yet valid</li>
+                        <li>Certificate file is corrupted</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('authenticate') }}" class="btn btn-primary">Try Again</a>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

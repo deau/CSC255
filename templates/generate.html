@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keys Generated - CSC255 Group 3 Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Keys & Certificate Generated</h1>
+            <p>Your cryptographic materials are ready for download!</p>
+        </header>
+
+        <main>
+            <div class="success-message">
+                <h2>Success!</h2>
+                <p>Your RSA key pair and self-signed certificate have been generated.</p>
+            </div>
+
+            <div class="download-section">
+                <h3>Download Your Files</h3>
+
+                <div class="download-item">
+                    <div class="file-info">
+                        <strong>Private Key</strong>
+                        <span class="file-desc">Keep this secure and never share it</span>
+                    </div>
+                    <a href="{{ url_for('download', session_id=session_id, filename='private_key.pem') }}"
+                       class="btn btn-download">Download private_key.pem</a>
+                </div>
+
+                <div class="download-item">
+                    <div class="file-info">
+                        <strong>Public Key</strong>
+                        <span class="file-desc">Can be shared publicly</span>
+                    </div>
+                    <a href="{{ url_for('download', session_id=session_id, filename='public_key.pem') }}"
+                       class="btn btn-download">Download public_key.pem</a>
+                </div>
+
+                <div class="download-item">
+                    <div class="file-info">
+                        <strong>Certificate</strong>
+                        <span class="file-desc">Self-signed certificate for authentication</span>
+                    </div>
+                    <a href="{{ url_for('download', session_id=session_id, filename='certificate.pem') }}"
+                       class="btn btn-download">Download certificate.pem</a>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+                <a href="{{ url_for('authenticate') }}" class="btn btn-primary">Test Certificate</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

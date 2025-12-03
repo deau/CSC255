@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticate Certificate - CSC255 Group 3 Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Authenticate Certificate</h1>
+            <p>Upload a certificate file to verify its authenticity</p>
+        </header>
+
+        <main>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="upload-section">
+                <form action="{{ url_for('authenticate') }}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="certificate">Select Certificate File (.pem)</label>
+                        <input type="file"
+                               id="certificate"
+                               name="certificate"
+                               accept=".pem"
+                               required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Verify Certificate</button>
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="info-section">
+                <h3>Certificate Requirements</h3>
+                <ul>
+                    <li>File must be in PEM format (.pem extension)</li>
+                    <li>Certificate must be self-signed</li>
+                    <li>Certificate must be valid (not expired)</li>
+                    <li>Maximum file size: 1MB</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
